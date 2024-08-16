@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userID        String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String
+  address       String?
+  paymentMethod PaymentMethod?
+  isVerified    Boolean?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Wallet        Wallet?
+  loansTaken    LoanRequest[]  @relation("Borrower")
+  fundings      Funding[]      @relation("LenderFundings")
+  repayment     Repayment[]
+}
+
+model Wallet {
+  walletID String   @id @default(cuid())
+  balance  Float    @default(0)
+  userID   String   @unique
+  user     User     @relation(fields: [userID], references: [userID])
+  addedAt  DateTime @default(now())
+}
+
+model LoanRequest {
+  loanRequestID        String                 @id @default(cuid())
+  amount               Float
+  purpose              String
+  interestRate         Float
+  termMonths           Int
+  status               LoanRequestStatus      @default(PENDING)
+  requestedAt          DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  borrowerID           String
+  borrower             User                   @relation("Borrower", fields: [borrowerID], references: [userID])
+  fundings             Funding[]              @relation("LoanFundings")
+  fundedAmount         Float                  @default(0)
+  Repayment            Repayment[]
+  InterestDistribution InterestDistribution[]
+  NPA                  NPA[]
+}
+
+model Funding {
+  fundingID   String      @id @default(cuid())
+  loanID      String
+  lenderID    String      @unique
+  amount      Float
+  loanRequest LoanRequest @relation("LoanFundings", fields: [loanID], references: [loanRequestID])
+  lender      User        @relation("LenderFundings", fields: [lenderID], references: [userID])
+}
+
+model Repayment {
+  repaymentID   String          @id @default(cuid())
+  borrowerID    String
+  borrower      User            @relation(fields: [borrowerID], references: [userID])
+  amount        Float
+  loanID        String
+  loan          LoanRequest     @relation(fields: [loanID], references: [loanRequestID])
+  repaymentDate DateTime?
+  status        RepaymentStatus @default(PENDING)
+  createdAt     DateTime        @default(now())
+}
+
+model InterestDistribution {
+  interestID       Int         @id @default(autoincrement())
+  interestAmount   Float
+  loanID           String
+  loan             LoanRequest @relation(fields: [loanID], references: [loanRequestID])
+  lenderShare      Float
+  platformShare    Float
+  distributorShare Float?
+}
+
+model NPA {
+  npaID      String            @id @default(cuid())
+  loanID     String
+  loan       LoanRequest       @relation(fields: [loanID], references: [loanRequestID])
+  status     LoanRequestStatus @default(NPA)
+  reason     String
+  dateMarked DateTime          @default(now())
+}
+
+enum PaymentMethod {
+  Credit_Card
+  UPI
+  Debit_Card
+  Net_Banking
+  Wallet
+}
+
+enum LoanRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FUNDED
+  NPA
+}
+
+enum RepaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  OVERDUE
+}
