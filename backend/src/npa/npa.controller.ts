@@ -8,9 +8,10 @@ import {
 } from '@nestjs/common';
 import { NpaService } from './npa.service';
 import { CreateNpaDto } from './dto/create-npa.dto';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
+@ApiTags('NPA')
 @Controller('npa')
 export class NpaController {
   constructor(private readonly npaService: NpaService) {}

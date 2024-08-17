@@ -24,16 +24,19 @@ export class UsersService {
       const existingUser = await this.databaseService.user.findUnique({
         where: { email },
       });
+
       if (existingUser) {
         throw new BadGatewayException('User with email already exists');
       }
-      const user = await this.databaseService.user.create({
+
+      await this.databaseService.user.create({
         data: {
           name,
           email,
           password: hashedPassword,
         },
       });
+
       return {
         message:
           'Registration successful. Please check your email to verify your account.',
@@ -58,6 +61,7 @@ export class UsersService {
       if (!validatePassword) {
         throw new UnauthorizedException('Password is incorrect');
       }
+
       return {
         token: this.jwtservice.sign({ email }),
         user: {
@@ -80,7 +84,9 @@ export class UsersService {
           paymentMethod: updateProfileDto.paymentMethod,
         },
       });
-      return updatedUser;
+      return {
+        message: 'Address and Payment method has been added successfully',
+      };
     } catch (error) {
       return error;
     }

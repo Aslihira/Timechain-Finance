@@ -17,7 +17,7 @@ export class LoanService {
       const { amount, interestRate, termMonths } = createLoanDto;
 
       let status: LoanRequestStatus;
-      if (amount > 50000 || interestRate < 5 || termMonths > 36) {
+      if (amount > 50000 || interestRate < 0.1 || termMonths > 36) {
         status = LoanRequestStatus.REJECTED;
       } else {
         status = LoanRequestStatus.APPROVED;
@@ -74,10 +74,14 @@ export class LoanService {
         throw new BadRequestException();
       }
 
-      return this.databaseService.loanRequest.update({
+      await this.databaseService.loanRequest.update({
         where: { loanRequestID: loanID },
         data: updateLoanDto,
       });
+
+      return {
+        message: 'Loan has been updated successfully',
+      };
     } catch (error) {
       return error;
     }
@@ -86,14 +90,17 @@ export class LoanService {
   async deleteLoanRequest(loanID: string) {
     try {
       const existingLoan = await this.fetchLoanById(loanID);
-
       if (existingLoan.status !== LoanRequestStatus.PENDING) {
         throw new BadRequestException('Loan request is not pending');
       }
 
-      return this.databaseService.loanRequest.delete({
+      await this.databaseService.loanRequest.delete({
         where: { loanRequestID: loanID },
       });
+
+      return {
+        message: 'Loan Request has been deleted successfully',
+      };
     } catch (error) {
       return error;
     }
@@ -103,6 +110,17 @@ export class LoanService {
     try {
       return await this.databaseService.loanRequest.findMany({
         where: { status: LoanRequestStatus.APPROVED },
+        select: {
+          borrower: {
+            select: {
+              name: true,
+            },
+          },
+          amount: true,
+          purpose: true,
+          interestRate: true,
+          termMonths: true,
+        },
       });
     } catch (error) {
       throw error;
@@ -125,7 +143,7 @@ export class LoanService {
         },
       });
 
-      await this.databaseService.loanRequest.update({
+      const updatedLoan = await this.databaseService.loanRequest.update({
         where: { loanRequestID: loanID },
         data: {
           fundedAmount: {
@@ -133,6 +151,15 @@ export class LoanService {
           },
         },
       });
+
+      if (updatedLoan.fundedAmount === updatedLoan.amount) {
+        await this.databaseService.loanRequest.update({
+          where: { loanRequestID: loanID },
+          data: {
+            status: LoanRequestStatus.FUNDED,
+          },
+        });
+      }
 
       return {
         message: 'Loan funded successfully.',

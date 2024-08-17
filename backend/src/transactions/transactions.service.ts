@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { RecordRepaymentDto } from './dto/record-repayment.dto';
-import { RepaymentStatus } from '@prisma/client';
+import { LoanRequestStatus, RepaymentStatus } from '@prisma/client';
 import { InterestDistributionDto } from './dto/interest-distribution.dto';
 
 @Injectable()
@@ -20,6 +24,16 @@ export class TransactionsService {
 
       if (!loan) {
         throw new NotFoundException();
+      }
+
+      if (
+        loan.status === LoanRequestStatus.PENDING ||
+        loan.status === LoanRequestStatus.REJECTED ||
+        loan.status === LoanRequestStatus.NPA
+      ) {
+        throw new BadRequestException(
+          'Loan repayment cannot be processed due to the current loan status.',
+        );
       }
 
       const repayment = await this.databaseService.repayment.create({
@@ -71,7 +85,9 @@ export class TransactionsService {
           },
         });
       }
-      return repayment;
+      return {
+        message: 'Repayment has been completed successfully',
+      };
     } catch (error) {
       return error;
     }

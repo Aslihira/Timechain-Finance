@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -12,12 +12,8 @@ export class WalletService {
         include: { Wallet: true },
       });
 
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-
       if (user.Wallet) {
-        const updatedWallet = await this.databaseService.wallet.update({
+        await this.databaseService.wallet.update({
           where: { walletID: user.Wallet.walletID },
           data: {
             balance: user.Wallet.balance + amount,
@@ -28,7 +24,7 @@ export class WalletService {
           message: 'Funds added successfully.',
         };
       } else {
-        const newWallet = await this.databaseService.wallet.create({
+        await this.databaseService.wallet.create({
           data: {
             balance: amount,
             userID: userId,

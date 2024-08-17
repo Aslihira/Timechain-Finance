@@ -42,13 +42,16 @@ export class NpaService {
     const npaLoan = await this.databaseService.nPA.findUnique({
       where: { npaID },
     });
-
     if (!npaLoan) {
       throw new NotFoundException('Loan is not marked as NPA');
     }
 
-    return this.databaseService.nPA.delete({
+    await this.databaseService.nPA.delete({
       where: { npaID },
     });
+
+    return {
+      message: 'Loan has been removed from NPA',
+    };
   }
 }
