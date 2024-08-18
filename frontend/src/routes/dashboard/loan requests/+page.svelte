@@ -1,5 +1,5 @@
 <script lang="ts">
-    // Sample data for loan requests
+    
     let loanRequests = [
         {
             id: 1,
@@ -22,41 +22,8 @@
             interestRate: 6.0,
             borrowerRating: 4.7
         },
-        // Add more sample data as needed
+      
     ];
-
-    // Variables for filtering
-    let selectedCategory = '';
-    let minAmount = 0;
-    let maxAmount = Infinity;
-    let minInterestRate = 0;
-    let maxInterestRate = Infinity;
-    let minBorrowerRating = 0;
-    let maxBorrowerRating = 5;
-
-    // Computed filtered loan requests
-    $: filteredRequests = loanRequests.filter((request) => {
-        return (
-            (selectedCategory === '' || request.category === selectedCategory) &&
-            request.amount >= minAmount &&
-            request.amount <= maxAmount &&
-            request.interestRate >= minInterestRate &&
-            request.interestRate <= maxInterestRate &&
-            request.borrowerRating >= minBorrowerRating &&
-            request.borrowerRating <= maxBorrowerRating
-        );
-    });
-
-    // Function to clear filters
-    function clearFilters() {
-        selectedCategory = '';
-        minAmount = 0;
-        maxAmount = Infinity;
-        minInterestRate = 0;
-        maxInterestRate = Infinity;
-        minBorrowerRating = 0;
-        maxBorrowerRating = 5;
-    }
 </script>
 
 <style>
@@ -99,26 +66,6 @@
         background-color: #005770;
     }
 
-    .filter-container {
-        display: flex;
-        gap: 2rem;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-    }
-
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        flex: 1;
-        min-width: 250px;
-    }
-
-    .filter-group label {
-        font-weight: bold;
-        color: #2c3e50;
-    }
-
     .loan-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -154,21 +101,6 @@
         color: #f39c12;
     }
 
-    .clear-filters {
-        background-color: #f44336;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-bottom: 2rem;
-    }
-
-    .clear-filters:hover {
-        background-color: #e53935;
-    }
-
     .fund-button {
         background-color: #007A94;
         color: white;
@@ -193,52 +125,14 @@
         <a href="/dashboard" class="back-button">Back to Dashboard</a>
     </div>
 
-    <div class="filter-container">
-        <div class="filter-group">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Category</label>
-            <select bind:value={selectedCategory}>
-                <option value="">All</option>
-                <option value="Business">Business</option>
-                <option value="Education">Education</option>
-                <option value="Medical">Medical</option>
-                <!-- Add more categories as needed -->
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Amount Range</label>
-            <input type="number" bind:value={minAmount} placeholder="Min" />
-            <input type="number" bind:value={maxAmount} placeholder="Max" />
-        </div>
-
-        <div class="filter-group">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Interest Rate (%)</label>
-            <input type="number" step="0.1" bind:value={minInterestRate} placeholder="Min" />
-            <input type="number" step="0.1" bind:value={maxInterestRate} placeholder="Max" />
-        </div>
-
-        <div class="filter-group">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Borrower Rating</label>
-            <input type="number" step="0.1" bind:value={minBorrowerRating} placeholder="Min" />
-            <input type="number" step="0.1" bind:value={maxBorrowerRating} placeholder="Max" />
-        </div>
-    </div>
-
-    <button class="clear-filters" on:click={clearFilters}>Clear Filters</button>
-
     <div class="loan-list">
-        {#each filteredRequests as request}
+        {#each loanRequests as request}
             <div class="loan-item">
                 <h2>{request.category}</h2>
                 <p><strong>Amount:</strong> ${request.amount}</p>
                 <p><strong>Interest Rate:</strong> {request.interestRate}%</p>
                 <p><strong>Borrower Rating:</strong> <span class="borrower-rating">{request.borrowerRating}</span></p>
                 <a href={`/dashboard/funding/${request.id}`} class="fund-button">Fund Loan</a>
-
             </div>
         {/each}
     </div>

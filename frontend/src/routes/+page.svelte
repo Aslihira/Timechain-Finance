@@ -88,7 +88,7 @@
         </span>
       </div>
       <nav class="flex space-x-4">
-        <!-- Add navigation links if needed -->
+       
       </nav>
     </div>
   </header>

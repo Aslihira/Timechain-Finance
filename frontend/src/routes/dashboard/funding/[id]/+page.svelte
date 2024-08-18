@@ -6,12 +6,12 @@
     let loanId: number;
     let loanDetails: { id: number; category: string; amount: number; interestRate: number; borrowerRating: number; } | null | undefined = null;
 
-    // Mock data for loan details
+   
     let loanRequests = [
         { id: 1, category: 'Business', amount: 5000, interestRate: 5.5, borrowerRating: 4.5 },
         { id: 2, category: 'Education', amount: 10000, interestRate: 4.8, borrowerRating: 4.0 },
         { id: 3, category: 'Medical', amount: 8000, interestRate: 6.0, borrowerRating: 4.7 }
-        // Add more sample data as needed
+       
     ];
 
     onMount(() => {
@@ -21,7 +21,7 @@
     });
 
     function handleSubmit() {
-        // Handle funding logic
+       
         alert(`Funding loan request ID: ${loanId}`);
     }
 </script>

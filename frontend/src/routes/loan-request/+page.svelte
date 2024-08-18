@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { createLoanRequest } from '../../api'; 
+
     let loanRequest = {
         amount: '',
         purpose: '',
@@ -6,22 +8,31 @@
         interestRate: ''
     };
 
-    // Function to handle form submission
     async function submitRequest() {
-        // Example URL for submission, adjust based on your API
-        const response = await fetch('/api/loan-requests', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(loanRequest)
-        });
+        try {
+            
+            const response = await createLoanRequest({
+                amount: Number(loanRequest.amount),
+                purpose: loanRequest.purpose,
+                termMonths: Number(loanRequest.duration),
+                interestRate: Number(loanRequest.interestRate)
+            });
 
-        if (response.ok) {
-            alert('Loan request submitted successfully!');
-            // Optionally, redirect or reset form
-        } else {
-            alert('Failed to submit loan request.');
+            if (response.status === 201) {
+                alert('Loan request submitted successfully!');
+                
+                loanRequest = {
+                    amount: '',
+                    purpose: '',
+                    duration: '',
+                    interestRate: ''
+                };
+            } else {
+                alert('Failed to submit loan request.');
+            }
+        } catch (error) {
+            console.error('Error submitting loan request:', error);
+            alert('An error occurred while submitting the loan request.');
         }
     }
 </script>

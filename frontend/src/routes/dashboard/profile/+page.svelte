@@ -1,5 +1,5 @@
 <script lang="ts">
-    // Sample data for user profile
+    
     let userProfile = {
         name: 'John Doe',
         email: 'john.doe@example.com',
@@ -11,7 +11,7 @@
     };
 
     function saveProfile() {
-        // Logic to save the profile (e.g., API call)
+        
         alert('Profile saved!');
     }
 </script>

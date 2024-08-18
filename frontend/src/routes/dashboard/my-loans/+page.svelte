@@ -1,5 +1,5 @@
 <script lang="ts">
-    // Sample data for loan details
+    
     let loanDetails = {
         loanId: 1,
         category: "Business",
@@ -7,32 +7,32 @@
         interestRate: 5.5,
         borrowerRating: 4.5,
         repaymentStatus: "On Track",
-        totalRepayment: 6000, // Total amount to be repaid by the borrower
-        amountPaid: 2000, // Amount already paid by the borrower
-        remainingRepayment: 4000, // Remaining amount to be repaid
-        totalInterestEarned: 1200, // Total interest earned by the lender
-        remainingInterestToBeReceived: 800, // Remaining interest to be received
+        totalRepayment: 6000, 
+        amountPaid: 2000, 
+        remainingRepayment: 4000, 
+        totalInterestEarned: 1200, 
+        remainingInterestToBeReceived: 800, 
         performanceUpdates: [
             { type: "Repayment received", date: "2024-08-01" },
             { type: "Interest payment recorded", date: "2024-08-15" },
         ],
     };
 
-    // Function to handle repayment
+    
     function handleRepay() {
-        // Implement repayment logic here
+        
         alert("Repayment initiated.");
     }
 
-    // Function to handle reminder
+   
     function handleReminder() {
-        // Implement reminder logic here
+        
         alert("Reminder set for repayment.");
     }
 </script>
 
 <div class="container">
-    <!-- Borrower Repayment Details -->
+    
     <div class="section">
         <a href="/dashboard" class="back-button">Back to Dashboard</a>
         <div class="section-header">Repayment Details</div>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <!-- Lender Interest Earned -->
+    
     <div class="section">
         <div class="section-header">Interest Earned</div>
         <div class="details">
@@ -76,7 +76,6 @@
         </div>
     </div>
 
-    <!-- Performance Updates -->
     <div class="section performance-updates">
         <div class="section-header">Performance Updates</div>
         <ul>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    // Example state for settings
+    
     let userSettings = {
         emailNotifications: true,
         twoFactorAuth: false,
@@ -10,7 +10,7 @@
     };
 
     function saveSettings() {
-        // Logic to save the settings (e.g., API call)
+        
         alert('Settings saved!');
     }
 </script>
