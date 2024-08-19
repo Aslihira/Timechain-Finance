@@ -9,31 +9,35 @@
     };
 
     async function submitRequest() {
-        try {
-            const response = await createLoanRequest({
-                amount: Number(loanRequest.amount),
-                purpose: loanRequest.purpose,
-                termMonths: Number(loanRequest.duration),
-                interestRate: Number(loanRequest.interestRate)
-            });
+    try {
+        const response = await createLoanRequest({
+            amount: Number(loanRequest.amount),
+            purpose: loanRequest.purpose,
+            termMonths: Number(loanRequest.duration),
+            interestRate: Number(loanRequest.interestRate)
+        });
 
-            if (response.status === 201) {
-                alert('Loan request submitted successfully!');
-                
-                loanRequest = {
-                    amount: '',
-                    purpose: '',
-                    duration: '',
-                    interestRate: ''
-                };
-            } else {
-                alert('Failed to submit loan request.');
-            }
-        } catch (error) {
-            console.error('Error submitting loan request:', error);
-            alert('An error occurred while submitting the loan request.');
+        console.log('Response:', response);
+
+        if (response.status === 201) {
+            alert('Loan request submitted successfully!');
+            
+            loanRequest = {
+                amount: '',
+                purpose: '',
+                duration: '',
+                interestRate: ''
+            };
+        } else {
+            console.warn('Unexpected status code:', response.status);
+            alert('Failed to submit loan request.');
         }
+    } catch (error) {
+        console.error('Error submitting loan request:', error);
+        alert('An error occurred while submitting the loan request.');
     }
+}
+
 </script>
 
 <!-- Navbar -->
