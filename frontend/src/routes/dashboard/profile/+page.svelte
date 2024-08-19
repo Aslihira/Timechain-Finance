@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { updateUserProfile } from "../../../api";
     
     let userProfile = {
         name: 'John Doe',
@@ -10,134 +11,119 @@
         paymentMethod: '',
     };
 
-    function saveProfile() {
-        
-        alert('Profile saved!');
+    async function saveProfile() {
+        try {
+            await updateUserProfile(userProfile);
+            alert('Profile saved!');
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            alert('Failed to save profile.');
+        }
     }
 </script>
 
-<style>
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: #f4f4f4;
-        border-radius: 1rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+<!-- Navbar -->
+<nav class="bg-[#003A4D] text-white p-3 flex justify-between items-center shadow-md">
+    <div class="flex items-center space-x-4">
+        <a href="/" class="flex items-center -space-x-8">
+            <img src="/images/transparent_lighter_logo.png" class="h-12" alt="tcf logo" />
+            <span class="uppercase text-2xl font-semibold whitespace-nowrap text-white ml-2">
+                timechain <span class="text-teal-300">finance</span>
+            </span>
+        </a>
+    </div>
+    <div class="flex">
+        <a href="/dashboard/loan-requests" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Browse Loan Requests</a>
+        <a href="/dashboard/my-loans" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">My Loans</a>
+        <a href="/dashboard/wallet" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Wallet</a>
+        <a href="/dashboard/profile" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Profile</a>
+        <a href="/dashboard/settings" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Settings</a>
+    </div>
+</nav>
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #003A4D;
-    }
-
-    .title {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #003A4D;
-        text-transform: uppercase;
-    }
-
-    .back-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    .back-button:hover {
-        background-color: #005770;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #2c3e50;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-    }
-
-    .form-group textarea {
-        resize: vertical;
-    }
-
-    .save-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .save-button:hover {
-        background-color: #005770;
-    }
-</style>
-
-<div class="container">
-    <div class="header">
-        <h1 class="title">Profile</h1>
-        <a href="/dashboard" class="back-button">Back to Dashboard</a>
+<!-- Profile Page Content -->
+<div class="max-w-4xl mx-auto p-8 bg-[#003A4D] rounded-lg shadow-lg mt-8 mb-24">
+    <div class="flex justify-between items-center mb-8 pb-4 border-b-2 border-teal-800">
+        <h1 class="text-3xl font-bold text-white uppercase">Profile</h1>
+        <a href="/dashboard" class="bg-[#007A94] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Back to Dashboard</a>
     </div>
 
-    <form on:submit|preventDefault={saveProfile}>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" bind:value={userProfile.name} />
+    <form on:submit|preventDefault={saveProfile} class="space-y-6">
+        <div class="space-y-2">
+            <label for="name" class="block text-lg font-semibold text-white">Name</label>
+            <input
+                type="text"
+                id="name"
+                bind:value={userProfile.name}
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                readonly
+            />
         </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" bind:value={userProfile.email} />
+        <div class="space-y-2">
+            <label for="email" class="block text-lg font-semibold text-white">Email</label>
+            <input
+                type="email"
+                id="email"
+                bind:value={userProfile.email}
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                readonly
+            />
         </div>
 
-        <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" id="address" bind:value={userProfile.address} />
+        <div class="space-y-2">
+            <label for="address" class="block text-lg font-semibold text-white">Address</label>
+            <input
+                type="text"
+                id="address"
+                bind:value={userProfile.address}
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+            />
         </div>
 
-        <div class="form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="text" id="phoneNumber" bind:value={userProfile.phoneNumber} />
+        <div class="space-y-2">
+            <label for="phoneNumber" class="block text-lg font-semibold text-white">Phone Number</label>
+            <input
+                type="text"
+                id="phoneNumber"
+                bind:value={userProfile.phoneNumber}
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                readonly
+            />
         </div>
 
-        <div class="form-group">
-            <label for="purposeOfBorrowing">Purpose of Borrowing</label>
-            <textarea id="purposeOfBorrowing" bind:value={userProfile.purposeOfBorrowing} rows="4"></textarea>
+        <div class="space-y-2">
+            <label for="purposeOfBorrowing" class="block text-lg font-semibold text-white">Purpose of Borrowing</label>
+            <textarea
+                id="purposeOfBorrowing"
+                bind:value={userProfile.purposeOfBorrowing}
+                rows="4"
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                readonly
+            ></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="financialDetails">Financial Details</label>
-            <textarea id="financialDetails" bind:value={userProfile.financialDetails} rows="4"></textarea>
+        <div class="space-y-2">
+            <label for="financialDetails" class="block text-lg font-semibold text-white">Financial Details</label>
+            <textarea
+                id="financialDetails"
+                bind:value={userProfile.financialDetails}
+                rows="4"
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                readonly
+            ></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="paymentMethod">Payment Method</label>
-            <input type="text" id="paymentMethod" bind:value={userProfile.paymentMethod} />
+        <div class="space-y-2">
+            <label for="paymentMethod" class="block text-lg font-semibold text-white">Payment Method</label>
+            <input
+                type="text"
+                id="paymentMethod"
+                bind:value={userProfile.paymentMethod}
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+            />
         </div>
 
-        <button type="submit" class="save-button">Save Profile</button>
+        <button type="submit" class="w-full bg-[#007A94] text-white py-3 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Save Profile</button>
     </form>
 </div>

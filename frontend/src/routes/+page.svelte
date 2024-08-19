@@ -110,13 +110,6 @@
     </div>
   </main>
 
-  <footer class="bg-gray-100 text-gray-600 py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <p class="footer-text">&copy; 2024 Timechain Finance™. All Rights Reserved.</p>
-      <div class="flex space-x-4 ml-auto">
-        <a href="https://tsoc.vercel.app/" class="footer-link">About</a>
-        <a href="https://tsoc.vercel.app/" class="footer-link">Contact</a>
-      </div>
-    </div>
-  </footer>
+  
+
 </div>

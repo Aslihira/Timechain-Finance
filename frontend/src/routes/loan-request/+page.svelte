@@ -10,7 +10,6 @@
 
     async function submitRequest() {
         try {
-            
             const response = await createLoanRequest({
                 amount: Number(loanRequest.amount),
                 purpose: loanRequest.purpose,
@@ -37,126 +36,71 @@
     }
 </script>
 
-<style>
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: #f4f4f4;
-        border-radius: 1rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+<!-- Navbar -->
+<nav class="bg-[#003A4D] text-white p-3 flex justify-between items-center shadow-md">
+    <div class="flex items-center space-x-4">
+        <a href="/" class="flex items-center -space-x-8">
+            <img src="/images/transparent_lighter_logo.png" class="h-12" alt="tcf logo" />
+            <span class="uppercase text-2xl font-semibold whitespace-nowrap text-white ml-2">
+                timechain <span class="text-teal-300">finance</span>
+            </span>
+        </a>
+    </div>
+    <div class="flex space-x-4">
+        <a href="/dashboard/loan-requests" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Browse Loan Requests</a>
+        <a href="/dashboard/my-loans" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">My Loans</a>
+        <a href="/dashboard/wallet" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Wallet</a>
+        <a href="/dashboard/profile" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Profile</a>
+        <a href="/dashboard/settings" class="text-white text-lg hover:bg-[#005770] px-4 py-2 rounded-lg transition duration-300">Settings</a>
+    </div>
+</nav>
 
-    .header {
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #003A4D;
-    }
-
-    .title {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #003A4D;
-        text-transform: uppercase;
-    }
-
-    .back-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-        display: inline-block;
-        margin-bottom: 1rem;
-    }
-
-    .back-button:hover {
-        background-color: #005770;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #2c3e50;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-group input, .form-group textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-    }
-
-    .form-group textarea {
-        resize: vertical;
-    }
-
-    .submit-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .submit-button:hover {
-        background-color: #005770;
-    }
-</style>
-
-<div class="container">
-    <div class="header">
-        <h1 class="title">Create Loan Request</h1>
-        <a href="/dashboard" class="back-button">Back to Dashboard</a>
+<!-- Loan Request Page Content -->
+<div class="max-w-4xl mx-auto p-8 bg-[#003A4D] rounded-lg shadow-lg mt-8 mb-24">
+    <div class="flex justify-between items-center mb-8 pb-4 border-b-2 border-teal-800">
+        <h1 class="text-3xl font-bold text-white uppercase">Create Loan Request</h1>
+        <a href="/dashboard" class="bg-[#007A94] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Back to Dashboard</a>
     </div>
 
-    <form on:submit|preventDefault={submitRequest}>
-        <div class="form-group">
-            <label for="amount">Amount</label>
+    <form on:submit|preventDefault={submitRequest} class="space-y-6">
+        <div class="space-y-2">
+            <label for="amount" class="block text-lg font-semibold text-white">Amount</label>
             <input
                 id="amount"
                 type="number"
                 bind:value={loanRequest.amount}
                 placeholder="Enter the amount"
                 required
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             />
         </div>
 
-        <div class="form-group">
-            <label for="purpose">Purpose</label>
+        <div class="space-y-2">
+            <label for="purpose" class="block text-lg font-semibold text-white">Purpose</label>
             <textarea
                 id="purpose"
                 bind:value={loanRequest.purpose}
                 placeholder="Describe the purpose of the loan"
                 rows="4"
                 required
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             ></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="duration">Duration (in months)</label>
+        <div class="space-y-2">
+            <label for="duration" class="block text-lg font-semibold text-white">Duration (in months)</label>
             <input
                 id="duration"
                 type="number"
                 bind:value={loanRequest.duration}
                 placeholder="Enter the duration"
                 required
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             />
         </div>
 
-        <div class="form-group">
-            <label for="interestRate">Preferred Interest Rate (%)</label>
+        <div class="space-y-2">
+            <label for="interestRate" class="block text-lg font-semibold text-white">Preferred Interest Rate (%)</label>
             <input
                 id="interestRate"
                 type="number"
@@ -164,9 +108,10 @@
                 bind:value={loanRequest.interestRate}
                 placeholder="Enter the interest rate"
                 required
+                class="w-full p-3 border border-[#005770] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             />
         </div>
 
-        <button type="submit" class="submit-button">Submit Request</button>
+        <button type="submit" class="w-full bg-[#007A94] text-white py-3 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Submit Request</button>
     </form>
 </div>

@@ -30,8 +30,15 @@
   </script>
   
   <nav class="bg-[#003A4D]">
-   
-  </nav>
+  <div class="max-w-screen-xl p-4">
+      <a href="/" class="flex items-center -space-x-8">
+          <img src="/images/transparent_lighter_logo.png" class="h-11" alt="tcf logo" />
+          <span class="uppercase text-2xl font-semibold whitespace-nowrap text-white">
+              timechain <span class="text-teal-300">finance</span>
+          </span>
+      </a>
+  </div>
+</nav>
   
   <section class="bg-gray-200 min-h-11/12 flex flex-col justify-center py-6">
     <h1 class="text-center text-3xl font-bold mb-4 text-[#003A4D]">Welcome Back to Timechain Finance</h1>
@@ -61,7 +68,7 @@
         <div>
           <button
             type="submit"
-            class="block w-md mx-auto bg-teal-700 hover:bg-teal-600 text-white hover:text-black font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+            class="block w-md mx-auto bg-[#003A4D] hover:bg-[#002D40] text-white hover:text-gray-100 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
           >
             Log In
           </button>

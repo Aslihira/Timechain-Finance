@@ -108,9 +108,10 @@ export class LoanService {
 
   async findAllApprovedLoans() {
     try {
-      return await this.databaseService.loanRequest.findMany({
+      const loans = await this.databaseService.loanRequest.findMany({
         where: { status: LoanRequestStatus.APPROVED },
         select: {
+          loanRequestID: true,
           borrower: {
             select: {
               name: true,
@@ -122,6 +123,7 @@ export class LoanService {
           termMonths: true,
         },
       });
+      return loans.map(({ loanRequestID, ...loan }) => loan);
     } catch (error) {
       throw error;
     }

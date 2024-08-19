@@ -1,5 +1,4 @@
 <script lang="ts">
-    
     let userSettings = {
         emailNotifications: true,
         twoFactorAuth: false,
@@ -10,122 +9,69 @@
     };
 
     function saveSettings() {
-        
         alert('Settings saved!');
     }
 </script>
 
-<style>
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-        background-color: #f4f4f4;
-        border-radius: 1rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+<div class="min-h-screen flex justify-center items-center bg-gray-100">
+    <div class="max-w-4xl w-full p-8 rounded-lg shadow-lg mb-24" style="background-color: #003A4D;">
+        <div class="flex justify-between items-center mb-8 pb-4 border-b-2 border-teal-800">
+            <h1 class="text-3xl font-bold text-white uppercase">Settings</h1>
+            <a href="/dashboard" class="bg-[#007A94] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Back to Dashboard</a>
+        </div>
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #003A4D;
-    }
+        <form on:submit|preventDefault={saveSettings} class="space-y-6">
+            <div class="space-y-2">
+                <label for="emailNotifications" class="block text-lg font-semibold text-gray-200">Email Notifications</label>
+                <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id="emailNotifications"
+                        bind:checked={userSettings.emailNotifications}
+                        class="form-checkbox h-5 w-5 text-teal-500"
+                    />
+                    <label for="emailNotifications" class="text-gray-200">Enable</label>
+                </div>
+            </div>
 
-    .title {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #003A4D;
-        text-transform: uppercase;
-    }
+            <div class="space-y-2">
+                <label for="twoFactorAuth" class="block text-lg font-semibold text-gray-200">Two-Factor Authentication</label>
+                <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id="twoFactorAuth"
+                        bind:checked={userSettings.twoFactorAuth}
+                        class="form-checkbox h-5 w-5 text-teal-500"
+                    />
+                    <label for="twoFactorAuth" class="text-gray-200">Enable</label>
+                </div>
+            </div>
 
-    .back-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
+            <div class="space-y-2">
+                <label for="dataSharing" class="block text-lg font-semibold text-gray-200">Data Sharing</label>
+                <select
+                    id="dataSharing"
+                    bind:value={userSettings.privacySettings.dataSharing}
+                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                >
+                    <option value="true">Allow</option>
+                    <option value="false">Do Not Allow</option>
+                </select>
+            </div>
 
-    .back-button:hover {
-        background-color: #005770;
-    }
+            <div class="space-y-2">
+                <label for="profileVisibility" class="block text-lg font-semibold text-gray-200">Profile Visibility</label>
+                <select
+                    id="profileVisibility"
+                    bind:value={userSettings.privacySettings.profileVisibility}
+                    class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                >
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+            </div>
 
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #2c3e50;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group select {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-    }
-
-    .save-button {
-        background-color: #007A94;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .save-button:hover {
-        background-color: #005770;
-    }
-</style>
-
-<div class="container">
-    <div class="header">
-        <h1 class="title">Settings</h1>
-        <a href="/dashboard" class="back-button">Back to Dashboard</a>
+            <button type="submit" class="w-full bg-[#007A94] text-white py-3 rounded-lg font-bold hover:bg-[#005770] transition duration-300">Save Settings</button>
+        </form>
     </div>
-
-    <form on:submit|preventDefault={saveSettings}>
-        <div class="form-group">
-            <label for="emailNotifications">Email Notifications</label>
-            <input type="checkbox" id="emailNotifications" bind:checked={userSettings.emailNotifications} />
-            <label for="emailNotifications">Enable</label>
-        </div>
-
-        <div class="form-group">
-            <label for="twoFactorAuth">Two-Factor Authentication</label>
-            <input type="checkbox" id="twoFactorAuth" bind:checked={userSettings.twoFactorAuth} />
-            <label for="twoFactorAuth">Enable</label>
-        </div>
-
-        <div class="form-group">
-            <label for="dataSharing">Data Sharing</label>
-            <select id="dataSharing" bind:value={userSettings.privacySettings.dataSharing}>
-                <option value="true">Allow</option>
-                <option value="false">Do Not Allow</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="profileVisibility">Profile Visibility</label>
-            <select id="profileVisibility" bind:value={userSettings.privacySettings.profileVisibility}>
-                <option value="Public">Public</option>
-                <option value="Private">Private</option>
-            </select>
-        </div>
-
-        <button type="submit" class="save-button">Save Settings</button>
-    </form>
 </div>
