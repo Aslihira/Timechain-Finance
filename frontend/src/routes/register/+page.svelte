@@ -74,12 +74,13 @@
               </label>
           </div>
           <div>
-              <button
-                  type="submit"
-                  class="block w-md mx-autobg-[#003A4D] hover:bg-[#002D40] text-white hover:text-gray-100 font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-              >
-                  Create Account
-              </button>
+            <button
+            type="submit"
+            class="block w-md mx-auto bg-[#003A4D] hover:bg-[#005770] text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+        >
+            Create Account
+        </button>
+        
           </div>
           <div class="text-gray-700 mt-6 text-center">
               Already have an account?

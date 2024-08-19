@@ -1,8 +1,7 @@
-<!-- <script lang="ts">
+<script lang="ts">
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
     import { getAllApprovedLoans, fundLoan as fundLoanApi } from '../../../api';
-    import { PaymentMethod } from '../../../enum';
 
     interface Loan {
         id: string;
@@ -31,7 +30,7 @@
             const response = await getAllApprovedLoans();
             approvedLoans = response.data.map((loan: Loan) => ({
                 ...loan,
-                borrowerRating: generateRandomRating()
+                borrowerRating: generateRandomRating(),
             }));
         } catch (error) {
             errorMessage = 'Failed to load loans. Please try again later.';
@@ -65,7 +64,7 @@
                 const paymentMethod = formData.get('paymentMethod') as string;
 
                 await fundLoanApi(selectedLoan.id, {
-                    amount: parseFloat(amount)
+                    amount: parseFloat(amount),
                 });
 
                 alert('Loan funded successfully!');
@@ -81,59 +80,38 @@
     });
 </script>
 
-<style>
-    .modal {
-        position: fixed;
-        inset: 0;
-        background-color: rgba(31, 41, 55, 0.75); /* Tailwind's gray-800 with opacity */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 50;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
-        max-width: 600px;
-        width: 90%;
-    }
-</style>
-
-<div class="container mx-auto p-4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-teal-800">Browse Loan Requests</h1>
-        <a href="/dashboard" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Back to Dashboard</a>
+<div class="container">
+    <div class="header">
+        <h1 class="title">Browse Loan Requests</h1>
+        <a href="/dashboard" class="back-button">Back to Dashboard</a>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div class="loan-list">
         {#each approvedLoans as request}
-            <div class="bg-white p-4 border rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
-                <h2 class="text-xl font-semibold text-teal-800">{request.purpose}</h2>
+            <div class="loan-item">
+                <h2>{request.purpose}</h2>
                 <p><strong>Amount:</strong> ${request.amount}</p>
                 <p><strong>Interest Rate:</strong> {request.interestRate}%</p>
-                <p><strong>Borrower Rating:</strong> {request.borrowerRating}</p>
-                <button on:click={() => openModal(request)} class="mt-4 bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Know More</button>
+                <p><strong>Borrower Rating:</strong> <span class="borrower-rating">{request.borrowerRating}</span></p>
+                <button on:click={() => openModal(request)} class="fund-button">Know More</button>
             </div>
         {/each}
     </div>
 
- {#if $showModal && selectedLoan}
-    <div class="modal" role="dialog" aria-labelledby="loan-details-title">
-        <div class="modal-content" role="document">
-            <h2 id="loan-details-title" class="text-2xl font-bold mb-4">Loan Details</h2>
-            <p><strong>Category:</strong> {selectedLoan.purpose}</p>
-            <p><strong>Amount:</strong> ${selectedLoan.amount}</p>
-            <p><strong>Interest Rate:</strong> {selectedLoan.interestRate}%</p>
-            <p><strong>Term (Months):</strong> {selectedLoan.termMonths}</p>
-            <p><strong>Borrower Rating:</strong> {selectedLoan.borrowerRating}</p>
-            <button on:click={openFundModal} class="mt-4 bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Fund Loan</button>
-            <button on:click={closeModal} class="mt-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Close</button>
+    {#if $showModal && selectedLoan}
+        <div class="modal" role="dialog" aria-labelledby="loan-details-title">
+            <div class="modal-content" role="document">
+                <h2 id="loan-details-title" class="text-2xl font-bold mb-4">Loan Details</h2>
+                <p><strong>Category:</strong> {selectedLoan.purpose}</p>
+                <p><strong>Amount:</strong> ${selectedLoan.amount}</p>
+                <p><strong>Interest Rate:</strong> {selectedLoan.interestRate}%</p>
+                <p><strong>Term (Months):</strong> {selectedLoan.termMonths}</p>
+                <p><strong>Borrower Rating:</strong> {selectedLoan.borrowerRating}</p>
+                <button on:click={openFundModal} class="mt-4 fund-button">Fund Loan</button>
+                <button on:click={closeModal} class="mt-2 close-button">Close</button>
+            </div>
         </div>
-    </div>
-{/if}
+    {/if}
 
     {#if $showFundModal}
         <div class="modal" role="dialog" aria-labelledby="fund-loan-title">
@@ -154,40 +132,13 @@
                             <option value="Wallet">Wallet</option>
                         </select>
                     </div>
-                    <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Confirm</button>
-                    <button type="button" on:click={closeFundModal} class="ml-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+                    <button type="submit" class="fund-button">Confirm</button>
+                    <button type="button" on:click={closeFundModal} class="ml-4 close-button">Cancel</button>
                 </form>
             </div>
         </div>
     {/if}
-</div> -->
-<script lang="ts">
-    
-    let loanRequests = [
-        {
-            id: 1,
-            category: 'Business',
-            amount: 5000,
-            interestRate: 5.5,
-            borrowerRating: 4.5
-        },
-        {
-            id: 2,
-            category: 'Education',
-            amount: 10000,
-            interestRate: 4.8,
-            borrowerRating: 4.0
-        },
-        {
-            id: 3,
-            category: 'Medical',
-            amount: 8000,
-            interestRate: 6.0,
-            borrowerRating: 4.7
-        },
-      
-    ];
-</script>
+</div>
 
 <style>
     .container {
@@ -280,23 +231,39 @@
     .fund-button:hover {
         background-color: #005770;
     }
+
+    .modal {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(31, 41, 55, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 90%;
+    }
+
+    .close-button {
+        background-color: #f4f4f4;
+        color: #333;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .close-button:hover {
+        background-color: #e5e7eb;
+    }
 </style>
-
-<div class="container">
-    <div class="header">
-        <h1 class="title">Browse Loan Requests</h1>
-        <a href="/dashboard" class="back-button">Back to Dashboard</a>
-    </div>
-
-    <div class="loan-list">
-        {#each loanRequests as request}
-            <div class="loan-item">
-                <h2>{request.category}</h2>
-                <p><strong>Amount:</strong> ${request.amount}</p>
-                <p><strong>Interest Rate:</strong> {request.interestRate}%</p>
-                <p><strong>Borrower Rating:</strong> <span class="borrower-rating">{request.borrowerRating}</span></p>
-                <a href={`/dashboard/funding/${request.id}`} class="fund-button">Fund Loan</a>
-            </div>
-        {/each}
-    </div>
-</div>
